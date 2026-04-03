@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////
 //
-// $Id: main.cc 2025/07/19 18:34:50 kanai Exp 
+// $Id: main.cc 2026/04/04 01:41:49 kanai Exp 
 //
 // Copyright (c) 2022-2025 by Takashi Kanai. All rights reserved.
 //
@@ -257,6 +257,9 @@ int main(int argc, char** argv) {
   }
 
   glfwMakeContextCurrent(window);
+
+  // 垂直同期（VSync）を有効にし，画面更新をディスプレイのリフレッシュレートに同期
+  glfwSwapInterval(1);
 
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
   glfwSetKeyCallback(window, key_callback);
