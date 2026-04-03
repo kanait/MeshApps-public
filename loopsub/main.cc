@@ -220,10 +220,10 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  // 垂直同期（VSync）を有効にし，画面更新をディスプレイのリフレッシュレートに同期
-  glfwSwapInterval(1);
-
   glfwMakeContextCurrent(window);
+
+  // 垂直同期（VSync）— コンテキストを current にした後で呼ぶこと（未設定だと GLFW が警告する）
+  glfwSwapInterval(1);
 
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
   glfwSetKeyCallback(window, key_callback);

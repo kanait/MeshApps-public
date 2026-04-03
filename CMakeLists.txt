@@ -21,14 +21,6 @@ endif()
 add_library(glad STATIC ${CMAKE_SOURCE_DIR}/common/common/external/glad/src/glad.c)
 target_include_directories(glad PUBLIC ${CMAKE_SOURCE_DIR}/common/common/external/glad/include)
 
-if(Eigen3_INCLUDE_DIR)
-  include_directories(${Eigen3_INCLUDE_DIR})
-elseif(EIGEN3_INCLUDE_DIR)
-  include_directories(${EIGEN3_INCLUDE_DIR})
-else()
-  message(FATAL_ERROR "Eigen include directory not found!")
-endif()
-
 # ========================
 # 共通インタフェースライブラリ（ヘッダのみ）
 # ========================
@@ -40,9 +32,19 @@ target_include_directories(mesh_common INTERFACE
   ${CMAKE_SOURCE_DIR}/common/common/meshL
   ${CMAKE_SOURCE_DIR}/common/common/octree
   ${CMAKE_SOURCE_DIR}/common/common/kdtree2d
-  ${EIGEN3_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
 )
+
+# Eigen3: 新しい CMake 設定は Eigen3::Eigen のみ（include 変数を出さない）。古い FindEigen3 は変数のみ。
+if(TARGET Eigen3::Eigen)
+  target_link_libraries(mesh_common INTERFACE Eigen3::Eigen)
+elseif(EIGEN3_INCLUDE_DIR)
+  target_include_directories(mesh_common INTERFACE ${EIGEN3_INCLUDE_DIR})
+elseif(Eigen3_INCLUDE_DIR)
+  target_include_directories(mesh_common INTERFACE ${Eigen3_INCLUDE_DIR})
+else()
+  message(FATAL_ERROR "Eigen include directory not found (no Eigen3::Eigen target or *_INCLUDE_DIR).")
+endif()
 
 # ========================
 # 各課題ごとのビルド設定
