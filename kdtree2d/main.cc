@@ -45,7 +45,6 @@ double max_c11fps = 0.0;
 
 // keyboard
 bool shift_key_pressed = false;
-bool control_key_pressed = false;
 // mouse
 bool left_button_pressed = false;
 bool right_button_pressed = false;
@@ -100,14 +99,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action,
     return;
   }
 
-  // control
-  else if ((key == GLFW_KEY_LEFT_CONTROL) && (action == GLFW_PRESS)) {
-    control_key_pressed = true;
-    return;
-  } else if ((key == GLFW_KEY_LEFT_CONTROL) && (action == GLFW_RELEASE)) {
-    control_key_pressed = false;
-    return;
-  }
 }
 
 // マウスイベント処理関数
@@ -129,11 +120,15 @@ static void cursorpos_callback(GLFWwindow* window, double xd, double yd) {
   int x = (int)xd;
   int y = (int)yd;
 
-  if (left_button_pressed && !shift_key_pressed && !control_key_pressed) {
+  const bool ctrl_held =
+      glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS ||
+      glfwGetKey(window, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS;
+
+  if (left_button_pressed && !shift_key_pressed && !ctrl_held) {
     pane.updateRotate(x, y);
-  } else if (left_button_pressed && shift_key_pressed && !control_key_pressed) {
+  } else if (left_button_pressed && shift_key_pressed && !ctrl_held) {
     pane.updateZoom(x, y);
-  } else if (left_button_pressed && !shift_key_pressed && control_key_pressed) {
+  } else if (left_button_pressed && !shift_key_pressed && ctrl_held) {
     pane.updateMove(x, y);
   }
 }
