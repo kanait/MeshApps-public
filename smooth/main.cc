@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////
 //
-// $Id: main.cc 2026/04/04 01:41:24 kanai Exp 
+// $Id: main.cc 2026/06/14 22:03:16 kanai Exp 
 //
 // Copyright (c) 2024-2025 Takashi Kanai
 // Released under the MIT license
@@ -191,7 +191,7 @@ bool isCrease( std::shared_ptr<HalfedgeL> he ) {
   return false;
 }
 
-void calcSmoothVertexNormalWithCrease( MeshL& mesh ) {
+bool calcSmoothVertexNormalWithCrease( MeshL& mesh ) {
 
   // ハーフエッジデータ構造の作成
   mesh.createConnectivity(true);
@@ -219,9 +219,12 @@ void calcSmoothVertexNormalWithCrease( MeshL& mesh ) {
   // NormalL（頂点法線）のインスタンスの作成
   // Crease がある場合，新しい Normal を作成する
   ////////////////////// ここから //////////////////////////
+  return false; // 空欄を埋めたら，この一文をコメントにせよ
+
 
 
   /////////////////// ここまでを埋める //////////////////////
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -240,7 +243,7 @@ int main(int argc, char** argv) {
   }
 
   // Smooth Shading 用法線ベクトルの生成
-  calcSmoothVertexNormalWithCrease(*mesh);
+  bool calcSmooth = calcSmoothVertexNormalWithCrease(*mesh);
 
   // ここからウインドウの初期化処理
   glfwSetErrorCallback(error_callback);
@@ -295,6 +298,10 @@ int main(int argc, char** argv) {
 
   // メッシュ表示用 に mesh をセット
   glmeshl.setMesh(mesh);
+  if (calcSmooth == true) {
+    glmeshl.setIsSmoothShading(true);
+    glmeshl.setIsDrawWireframe(false);
+  }
 
   c11fps.ResetFPS();
   
