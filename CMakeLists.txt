@@ -90,3 +90,14 @@ add_executable(smooth
 )
 target_include_directories(smooth PRIVATE ${CMAKE_SOURCE_DIR}/smooth)
 target_link_libraries(smooth mesh_common glad glfw OpenGL::GL)
+
+# 7. tutteparam (Tutte UV parameterization)
+add_executable(tutteparam
+  tutteparam/main.cc
+  tutteparam/TutteParam.hxx
+  tutteparam/GLParamMeshL.hxx
+)
+target_include_directories(tutteparam PRIVATE ${CMAKE_SOURCE_DIR}/tutteparam)
+target_link_libraries(tutteparam PRIVATE mesh_common glad glfw OpenGL::GL)
+
+
