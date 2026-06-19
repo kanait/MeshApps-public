@@ -4,6 +4,13 @@ project(MeshApps)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# MSVC: sources are UTF-8 (Japanese comments). Without /utf-8, CP932 mis-read
+# triggers C4819 and can break parsing (e.g. tutteparam/TutteParam.hxx).
+if(MSVC)
+  add_compile_options($<$<COMPILE_LANGUAGE:CXX>:/utf-8>)
+  add_compile_definitions(NOMINMAX WIN32_LEAN_AND_MEAN)
+endif()
+
 # ========================
 # パッケージの検出
 # ========================
